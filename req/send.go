@@ -10,14 +10,6 @@ import (
 	"strings"
 )
 
-// Request define requests in .req.json
-type Request struct {
-	Name    string   `json:"name"`
-	URL     string   `json:"url"`
-	Method  string   `json:"method"`
-	Headers []string `json:"headers"`
-}
-
 func contains(text string, elements []string) bool {
 	for _, element := range elements {
 		if element == text {
