@@ -43,7 +43,10 @@ func sendRequest(name string) {
 
 	for _, request := range requests {
 		if request.Name == name {
-			resp, err := http.Get(request.URL)
+			client := &http.Client{}
+
+			req, err := http.NewRequest(request.Method, request.URL, nil)
+			resp, err := client.Do(req)
 			if err != nil {
 				panic(err)
 			}
