@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -59,7 +60,10 @@ func sendRequest(name string) {
 			}
 			defer resp.Body.Close()
 
-			fmt.Println("Response status:", resp.Status)
+			scanner := bufio.NewScanner(resp.Body)
+			for i := 0; scanner.Scan(); i++ {
+				fmt.Println(scanner.Text())
+			}
 			return
 		}
 	}
