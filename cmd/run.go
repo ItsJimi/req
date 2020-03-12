@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -24,9 +25,10 @@ var runCmd = &cobra.Command{
 }
 
 type request struct {
-	Name   string `json:"name"`
-	URL    string `json:"url"`
-	Method string `json:"method"`
+	Name    string   `json:"name"`
+	URL     string   `json:"url"`
+	Method  string   `json:"method"`
+	Headers []string `json:"headers"`
 }
 
 func sendRequest(name string) {
@@ -46,6 +48,11 @@ func sendRequest(name string) {
 			client := &http.Client{}
 
 			req, err := http.NewRequest(request.Method, request.URL, nil)
+
+			for _, header := range request.Headers {
+				splittedHeader := strings.Split(header, ":")
+				req.Header.Add(splittedHeader[0], strings.TrimSpace(splittedHeader[1]))
+			}
 			resp, err := client.Do(req)
 			if err != nil {
 				panic(err)
