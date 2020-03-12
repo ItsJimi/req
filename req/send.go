@@ -18,8 +18,17 @@ type Request struct {
 	Headers []string `json:"headers"`
 }
 
+func contains(text string, elements []string) bool {
+	for _, element := range elements {
+		if element == text {
+			return true
+		}
+	}
+	return false
+}
+
 // Send a request with config file
-func Send(name string) {
+func Send(names []string) {
 	fileData, err := ioutil.ReadFile(os.Getenv("HOME") + "/.req.json")
 	if err != nil {
 		panic(err)
@@ -32,7 +41,7 @@ func Send(name string) {
 	}
 
 	for _, request := range requests {
-		if request.Name == name {
+		if contains(request.Name, names) == true {
 			client := &http.Client{}
 
 			req, err := http.NewRequest(request.Method, request.URL, nil)
@@ -51,9 +60,6 @@ func Send(name string) {
 			for i := 0; scanner.Scan(); i++ {
 				fmt.Println(scanner.Text())
 			}
-			return
 		}
 	}
-
-	fmt.Println("Request not found")
 }
