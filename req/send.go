@@ -2,6 +2,7 @@ package req
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -36,7 +37,15 @@ func Send(names []string) {
 		if contains(request.Name, names) == true {
 			client := &http.Client{}
 
-			req, err := http.NewRequest(request.Method, request.URL, nil)
+			var body []byte
+			if request.Body != nil {
+				body, err = json.Marshal(request.Body)
+				if err != nil {
+					panic(err)
+				}
+			}
+
+			req, err := http.NewRequest(request.Method, request.URL, bytes.NewBuffer(body))
 
 			for _, header := range request.Headers {
 				splittedHeader := strings.Split(header, ":")
