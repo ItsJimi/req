@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -21,18 +20,19 @@ func contains(text string, elements []string) bool {
 }
 
 // Send a request with config file
-func Send(names []string) {
+func Send(names []string) ([]string, error) {
 	fileData, err := ioutil.ReadFile(os.Getenv("HOME") + "/.req.json")
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	var requests []Request
 	err = json.Unmarshal(fileData, &requests)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
+	var results []string
 	for _, request := range requests {
 		if contains(request.Name, names) == true {
 			client := &http.Client{}
@@ -41,11 +41,14 @@ func Send(names []string) {
 			if request.Body != nil {
 				body, err = json.Marshal(request.Body)
 				if err != nil {
-					panic(err)
+					return nil, err
 				}
 			}
 
 			req, err := http.NewRequest(request.Method, request.URL, bytes.NewBuffer(body))
+			if err != nil {
+				return nil, err
+			}
 
 			for _, header := range request.Headers {
 				splittedHeader := strings.Split(header, ":")
@@ -53,14 +56,16 @@ func Send(names []string) {
 			}
 			resp, err := client.Do(req)
 			if err != nil {
-				panic(err)
+				return nil, err
 			}
 			defer resp.Body.Close()
 
 			scanner := bufio.NewScanner(resp.Body)
 			for i := 0; scanner.Scan(); i++ {
-				fmt.Println(scanner.Text())
+				results = append(results, scanner.Text())
 			}
 		}
 	}
+
+	return results, nil
 }
