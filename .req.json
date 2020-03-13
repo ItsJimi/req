@@ -1,0 +1,7 @@
+[
+  {
+    "name": "Yes/No",
+    "url": "https://yesno.wtf/api",
+    "method": "GET"
+  }
+]
