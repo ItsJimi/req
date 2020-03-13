@@ -1,7 +1,20 @@
 [
   {
-    "name": "Yes/No",
-    "url": "https://yesno.wtf/api",
+    "name": "Get first post",
+    "url": "https://jsonplaceholder.typicode.com/posts/1",
     "method": "GET"
+  },
+  {
+    "name": "Create post",
+    "url": "https://jsonplaceholder.typicode.com/posts",
+    "method": "POST",
+    "headers": [
+      "Content-type: application/json; charset=UTF-8"
+    ],
+    "body": {
+      "title": "foo",
+      "body": "bar",
+      "userId": 1
+    }
   }
 ]
