@@ -2,25 +2,27 @@ package req
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 )
 
 // List a requests with config file
-func List() {
+func List() ([]string, error) {
 	fileData, err := ioutil.ReadFile(os.Getenv("HOME") + "/.req.json")
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	var requests []Request
 	err = json.Unmarshal(fileData, &requests)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
+	var results []string
 	for _, request := range requests {
-		fmt.Println(request.Name)
+		results = append(results, request.Name)
 	}
+
+	return results, nil
 }

@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/ItsJimi/req/req"
 	"github.com/spf13/cobra"
 )
@@ -14,6 +16,13 @@ var listCmd = &cobra.Command{
 	Short: "List all requests names",
 	Long:  `List all requests names`,
 	Run: func(cmd *cobra.Command, args []string) {
-		req.List()
+		results, err := req.List()
+		if err != nil {
+			panic(err)
+		}
+
+		for _, result := range results {
+			fmt.Println(result)
+		}
 	},
 }
