@@ -16,7 +16,7 @@ var listCmd = &cobra.Command{
 	Short: "List all requests names",
 	Long:  `List all requests names`,
 	Run: func(cmd *cobra.Command, args []string) {
-		results, err := req.List()
+		results, err := req.List(Path)
 		if err != nil {
 			panic(err)
 		}

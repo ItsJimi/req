@@ -20,7 +20,7 @@ var runCmd = &cobra.Command{
 	Long:  `Run a request`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		results, err := req.Send(args)
+		results, err := req.Send(args, Path)
 		if err != nil {
 			panic(err)
 		}

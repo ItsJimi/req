@@ -3,12 +3,11 @@ package req
 import (
 	"encoding/json"
 	"io/ioutil"
-	"os"
 )
 
 // List a requests with config file
-func List() ([]string, error) {
-	fileData, err := ioutil.ReadFile(os.Getenv("HOME") + "/.req.json")
+func List(path string) ([]string, error) {
+	fileData, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}

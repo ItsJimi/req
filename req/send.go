@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"strings"
 )
 
@@ -20,8 +19,8 @@ func contains(text string, elements []string) bool {
 }
 
 // Send a request with config file
-func Send(names []string) ([]string, error) {
-	fileData, err := ioutil.ReadFile(os.Getenv("HOME") + "/.req.json")
+func Send(names []string, path string) ([]string, error) {
+	fileData, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
