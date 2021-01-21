@@ -100,8 +100,8 @@ By default, [.req.json](https://github.com/ItsJimi/req/blob/master/.req.json) mu
 ]
 ```
 ### Commands
-All commands can use `--help` or `-h` to display its specific help.
-All commands can use `--config` or `-c` to use a custom `.json` path. (By default req use a `.req.json` in your home directory)
+- All commands can use `--help` or `-h` to display its specific help.
+- All commands can use `--config` or `-c` to use a custom `.json` path. (By default req use a `.req.json` in your home directory)
 
 #### help
 Display helper
