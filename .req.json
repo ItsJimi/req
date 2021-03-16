@@ -2,7 +2,8 @@
   {
     "name": "Get first post",
     "url": "https://jsonplaceholder.typicode.com/posts/1",
-    "method": "GET"
+    "method": "GET",
+    "output": "echo \"Title: {{.title}}\nBody: {{.body}}\""
   },
   {
     "name": "Create post",
