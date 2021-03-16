@@ -7,4 +7,5 @@ type Request struct {
 	Method  string      `json:"method"`
 	Headers []string    `json:"headers"`
 	Body    interface{} `json:"body"`
+	Output  string      `json:"output"`
 }

@@ -1,12 +1,12 @@
 package req
 
 import (
-	"bufio"
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"text/template"
 )
 
 func contains(text string, elements []string) bool {
@@ -18,8 +18,13 @@ func contains(text string, elements []string) bool {
 	return false
 }
 
+type Result struct {
+	Output    string
+	IsCommand bool
+}
+
 // Send a request with config file
-func Send(names []string, path string) ([]string, error) {
+func Send(names []string, path string) ([]Result, error) {
 	fileData, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -31,7 +36,7 @@ func Send(names []string, path string) ([]string, error) {
 		return nil, err
 	}
 
-	var results []string
+	var results []Result
 	for _, request := range requests {
 		if contains(request.Name, names) == true {
 			client := &http.Client{}
@@ -57,12 +62,38 @@ func Send(names []string, path string) ([]string, error) {
 			if err != nil {
 				return nil, err
 			}
+			buffer, err := ioutil.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
 			defer resp.Body.Close()
 
-			scanner := bufio.NewScanner(resp.Body)
-			for i := 0; scanner.Scan(); i++ {
-				results = append(results, scanner.Text())
+			var payload interface{}
+			json.Unmarshal(buffer, &payload)
+			data := payload.(map[string]interface{})
+
+			if request.Output == "" {
+				results = append(results, Result{
+					Output:    string(buffer),
+					IsCommand: false,
+				})
+				continue
 			}
+
+			t, err := template.New("output").Parse(request.Output)
+			if err != nil {
+				return nil, err
+			}
+			buf := new(bytes.Buffer)
+			err = t.Execute(buf, data)
+			if err != nil {
+				return nil, err
+			}
+
+			results = append(results, Result{
+				Output:    buf.String(),
+				IsCommand: true,
+			})
 		}
 	}
 

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os/exec"
 
 	"github.com/ItsJimi/req/req"
 	"github.com/spf13/cobra"
@@ -25,12 +26,21 @@ var runCmd = &cobra.Command{
 			panic(err)
 		}
 
-		if silent == true {
+		if silent {
 			return
 		}
 
 		for _, result := range results {
-			fmt.Println(result)
+			if !result.IsCommand {
+				fmt.Println(result.Output)
+				continue
+			}
+
+			out, err := exec.Command("bash", "-c", result.Output).Output()
+			if err != nil {
+				panic(err)
+			}
+			fmt.Println(string(out))
 		}
 	},
 }
