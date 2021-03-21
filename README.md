@@ -82,7 +82,8 @@ By default, [.req.json](https://github.com/ItsJimi/req/blob/master/.req.json) mu
   {
     "name": "Get first post",
     "url": "https://jsonplaceholder.typicode.com/posts/1",
-    "method": "GET"
+    "method": "GET",
+    "output": "echo \"Title: {{.title}}\nBody: {{.body}}\""
   },
   {
     "name": "Create post",
@@ -99,6 +100,8 @@ By default, [.req.json](https://github.com/ItsJimi/req/blob/master/.req.json) mu
   }
 ]
 ```
+> `output` exec commands with bash and use go template to replace variables.
+
 ### Commands
 - All commands can use `--help` or `-h` to display its specific help.
 - All commands can use `--config` or `-c` to use a custom `.json` path. (By default req use a `.req.json` in your home directory)
