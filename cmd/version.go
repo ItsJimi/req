@@ -15,6 +15,6 @@ var versionCmd = &cobra.Command{
 	Short: "Print the version number of Req",
 	Long:  `Print the version number of Req`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("0.3.0")
+		fmt.Println("0.3.1")
 	},
 }
