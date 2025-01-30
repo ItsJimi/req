@@ -34,7 +34,7 @@ Use precompiled versions in [releases page](https://github.com/ItsJimi/req/relea
 or
 
 ```shell
-go get -u github.com/itsjimi/req
+go install github.com/ItsJimi/req@latest
 ```
 
 ## Usage
